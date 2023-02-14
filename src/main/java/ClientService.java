@@ -107,9 +107,9 @@ public class ClientService {
 
     private void checkIfNameValid(String name) {
         if (name.length() < 2) {
-            throw new InvalidNameLengthException("Name too short!");
+            throw new IncorrectNameLengthException("Name too short!");
         } else if (name.length() > 1000) {
-            throw new InvalidNameLengthException("Name too long!");
+            throw new IncorrectNameLengthException("Name too long!");
         }
     }
 }
