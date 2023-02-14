@@ -2,37 +2,37 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 public class ClientService {
-    private PreparedStatement createSt;
-    private PreparedStatement getByIdSt;
-    private PreparedStatement selectMaxIdSt;
-    private PreparedStatement updateSt;
-    private PreparedStatement deleteByIdSt;
-    private PreparedStatement getAllSt;
+    private PreparedStatement createStatement;
+    private PreparedStatement getByIdStatement;
+    private PreparedStatement selectMaxIdStatement;
+    private PreparedStatement updateStatement;
+    private PreparedStatement deleteByIdStatement;
+    private PreparedStatement getAllStatement;
 
     public ClientService(Connection connection){
         try {
-            createSt = connection.prepareStatement(
+            createStatement = connection.prepareStatement(
                     "INSERT INTO client (name) VALUES(?)",
                     Statement.RETURN_GENERATED_KEYS
             );
 
-            getByIdSt = connection.prepareStatement(
+            getByIdStatement = connection.prepareStatement(
                     "SELECT name FROM client WHERE id = ?"
             );
 
-            selectMaxIdSt = connection.prepareStatement(
+            selectMaxIdStatement = connection.prepareStatement(
                     "SELECT max(id) AS maxId FROM client"
             );
 
-            updateSt = connection.prepareStatement(
+            updateStatement = connection.prepareStatement(
                     ("UPDATE client SET name = ? WHERE id = ?")
             );
 
-            deleteByIdSt = connection.prepareStatement(
+            deleteByIdStatement = connection.prepareStatement(
                     "DELETE FROM client WHERE id = ?"
             );
 
-            getAllSt = connection.prepareStatement(
+            getAllStatement = connection.prepareStatement(
                     "SELECT id, name FROM client"
             );
         } catch (SQLException e) {
@@ -42,13 +42,13 @@ public class ClientService {
 
     public long create(String name) throws SQLException {
         checkIfNameValid(name);
-        createSt.setString(1, name);
+        createStatement.setString(1, name);
 
-        createSt.executeUpdate();
+        createStatement.executeUpdate();
 
         long id;
 
-        try (ResultSet generatedKeys = createSt.getGeneratedKeys()) {
+        try (ResultSet generatedKeys = createStatement.getGeneratedKeys()) {
             if (generatedKeys.next()) {
                 id = generatedKeys.getLong("id");
             }
@@ -61,9 +61,9 @@ public class ClientService {
     }
 
     public Client getById(long id) throws SQLException {
-        getByIdSt.setLong(1, id);
+        getByIdStatement.setLong(1, id);
 
-        try (ResultSet rs = getByIdSt.executeQuery()) {
+        try (ResultSet rs = getByIdStatement.executeQuery()) {
             if (!rs.next()) {
                 return null;
             }
@@ -78,20 +78,20 @@ public class ClientService {
 
     public void setName(long id, String name) throws SQLException {
         checkIfNameValid(name);
-        updateSt.setString(1, name);
-        updateSt.setLong(2, id);
+        updateStatement.setString(1, name);
+        updateStatement.setLong(2, id);
 
-        updateSt.executeUpdate();
+        updateStatement.executeUpdate();
     }
 
     public void deleteById(long id) throws SQLException {
-        deleteByIdSt.setLong(1, id);
+        deleteByIdStatement.setLong(1, id);
 
-        deleteByIdSt.executeUpdate();
+        deleteByIdStatement.executeUpdate();
     }
 
     public List<Client> listAll() throws SQLException {
-        try (ResultSet rs = getAllSt.executeQuery()) {
+        try (ResultSet rs = getAllStatement.executeQuery()) {
             List<Client> result = new ArrayList<>();
             while (rs.next()) {
                 Client client = new Client();

@@ -7,8 +7,8 @@ public class Main {
         Database database = Database.getInstance();
         new DatabaseInitService().initDb();
         ClientService clientService = new ClientService(database.getConnection());
-        List<Client> res = clientService.listAll();
-        System.out.println("res = " + res);
+        List<Client> clients = clientService.listAll();
+        System.out.println("clients = " + clients);
 
     }
 }
