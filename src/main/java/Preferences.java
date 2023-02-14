@@ -7,17 +7,17 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Prefs {
+public class Preferences {
     public static final String DB_JDBC_CONNECTION_URL = "dbUrl";
     public static final String DEFAULT_PREFS_FILENAME = "prefs.json";
 
     private Map<String, Object> prefs = new HashMap<>();
 
-    public Prefs() {
+    public Preferences() {
         this(DEFAULT_PREFS_FILENAME);
     }
 
-    public Prefs(String fileName) {
+    public Preferences(String fileName) {
         try {
             String json = Files.readString(Paths.get(fileName));
 
