@@ -6,7 +6,9 @@ public class Main {
     public static void main(String[] args) throws IOException, SQLException {
         Database database = Database.getInstance();
         new DatabaseInitService().initDb();
+
         ClientService clientService = new ClientService(database.getConnection());
+
         List<Client> clients = clientService.listAll();
         System.out.println("clients = " + clients);
 
